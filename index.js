@@ -1,11 +1,28 @@
 const express = require("express");
+const dotenv = require("dotenv");
+const mysql = require("mysql2/promise");
+
 const app = express();
+
+dotenv.config();
 
 app.use(express.json());
 
 //Handle a request to /tshirt
 
 app.listen(process.env.PORT || 8080, () => console.log("Server is running"));
+
+app.get('/', async (req,res) => {
+  const connection = await mysql.createConnection(process.env.DATABASE_URL);    
+
+  try {
+      const query = "SELECT * FROM hp_character";
+      const [rows] = await connection.query(query)
+      res.send(rows);        
+  } catch(err) {
+      console.error(err)
+  }
+})
 
 app.get("/tshirt", (req, res) => {
   res.status(200).send({
