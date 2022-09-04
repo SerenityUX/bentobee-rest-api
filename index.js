@@ -3,10 +3,9 @@ const app = express();
 
 app.use(express.json());
 
-const PORT = 8080;
 //Handle a request to /tshirt
 
-app.listen(PORT);
+app.listen(process.env.PORT || 8080, () => console.log("Server is running"));
 
 app.get("/tshirt", (req, res) => {
   res.status(200).send({
